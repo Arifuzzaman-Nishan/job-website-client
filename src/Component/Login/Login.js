@@ -1,8 +1,10 @@
+import { Radio } from "antd";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { React, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { useHistory, useLocation } from "react-router";
 import firebaseConfig from "./firebaseConfiq";
 
 if (!firebase.apps.length) {
@@ -24,12 +26,23 @@ const Login = () => {
     value: true,
   });
 
+  const history = useHistory();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: "/" } };
+
   // if the user is a new user
   const [newUser, setNewUser] = useState(false);
   const handleNewUser = (e) => {
     setNewUser(!newUser);
     setMessage({});
     reset();
+  };
+
+  const [radioValue, setRadioValue] = useState("employer");
+
+  const handlOnChange = (e) => {
+    // console.log("radio checked", e.target.value);
+    setRadioValue(e.target.value);
   };
 
   const password = useRef({});
@@ -48,13 +61,14 @@ const Login = () => {
         .createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
           // Signed in
-          var user = userCredential.user;
+          // var user = userCredential.user;
           console.log("nishan");
+          storeAuthToken();
           // ...
         })
         .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
+          // var errorCode = error.code;
+          const errorMessage = error.message;
           console.log(errorMessage);
           // ..
         });
@@ -64,14 +78,14 @@ const Login = () => {
         .signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           // Signed in
-          var user = userCredential.user;
+          // var user = userCredential.user;
           console.log("sign in successfully");
           storeAuthToken();
           // ...
         })
         .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
+          const errorCode = error.code;
+          const errorMessage = error.message;
         });
     }
   };
@@ -84,7 +98,11 @@ const Login = () => {
         console.log(idToken);
         sessionStorage.setItem("token", idToken);
 
-        // result? history.replace('/Dashboard') : history.replace(from);
+        alert('successfully log in');
+
+        radioValue === "employer"
+          ? history.replace("/package")
+          : history.replace(from);
       })
       .catch((err) => {
         // Handle error
@@ -171,14 +189,15 @@ const Login = () => {
               )}
 
               {/* check employee or not */}
-              {/* <input
-                className="mt-3 form-control"
-                placeholder="Your email"
-                {...register("email", { required: true })}
-              />
-              {errors.email && (
-                <span className="text-danger">email field is required</span>
-              )} */}
+              {newUser && (
+                <div className="mb-3">
+                  <p>What are you looking for:</p>
+                  <Radio.Group onChange={handlOnChange} defaultValue="employer">
+                    <Radio value="employer">Employer</Radio>
+                    <Radio value="JobSeeker">Job seeker</Radio>
+                  </Radio.Group>
+                </div>
+              )}
 
               {newUser ? (
                 <input

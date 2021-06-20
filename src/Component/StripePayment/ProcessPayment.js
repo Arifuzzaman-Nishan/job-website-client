@@ -1,9 +1,9 @@
 import {
-    CardCvcElement,
-    CardExpiryElement,
-    CardNumberElement,
-    useElements,
-    useStripe
+  CardCvcElement,
+  CardExpiryElement,
+  CardNumberElement,
+  useElements,
+  useStripe
 } from "@stripe/react-stripe-js";
 import React, { useMemo, useState } from "react";
 import './ProcessPayment.css';
@@ -88,6 +88,8 @@ const ProcessPayment = () => {
     setPaymentError(null);
   };
 
+  // paymentSuccess?
+
   return (
     <div >
       <form className='m-auto' style={{width:'18rem'}} onSubmit={handleSubmit}>
@@ -112,13 +114,13 @@ const ProcessPayment = () => {
         </button>
       </form>
       {paymentError && (
-        <div class="mt-4 alert alert-danger">
+        <div className="mt-4 alert alert-danger">
           <strong className="mr-3">Error!</strong>
           {paymentError}
         </div>
       )}
       {paymentSuccess && (
-        <div class="mt-4 alert alert-success">
+        <div className="mt-4 alert alert-success">
           <strong className="mr-3">Successfully</strong>
           Payment done
         </div>
