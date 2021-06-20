@@ -6,8 +6,9 @@ import {
   useStripe
 } from "@stripe/react-stripe-js";
 import React, { useContext, useMemo, useState } from "react";
+import { useHistory } from "react-router";
 import { postContext } from "../../App";
-import './ProcessPayment.css';
+import "./ProcessPayment.css";
 
 const useOptions = () => {
   const options = useMemo(
@@ -34,14 +35,16 @@ const useOptions = () => {
 };
 
 const ProcessPayment = () => {
-
   const stripe = useStripe();
   const elements = useElements();
   const options = useOptions();
+  const history = useHistory();
 
   const [paymentError, setPaymentError] = useState(null);
   const [paymentSuccess, setPaymentSuccess] = useState(null);
-  const [postDetails,setPostDetails] = useContext(postContext);
+
+  const [postDetails, setPostDetails] = useContext(postContext);
+  console.log(postDetails);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -61,26 +64,25 @@ const ProcessPayment = () => {
       setPaymentError(error.message);
       setPaymentSuccess(null);
     } else {
-      // console.log('[PaymentMethod]', paymentMethod);
       setPaymentSuccess(paymentMethod.id);
 
-      setPostDetails({...postDetails,
-        paymentStatus: 'successfully'
-      })
+      // setPostDetails({ ...postDetails, paymentStatus: "successfully" });
 
-      // const newOrder = {
-      //     name: sessionStorage.getItem('name'),
-      //     email: sessionStorage.getItem('email'),
-      //     img: img,
-      //     serviceName: name,
-      //     // price: price,
-      //     description: description,
-      //     // brand: paymentMethod.card.brand,
-      //     funding: paymentMethod.card.funding,
-      //     status: 'pending'
-      // }
+      // setPostDetails({...postDetails,payment:'success'});
 
-      // successFullPayment(newOrder);
+      fetch("http://localhost:5000/employerPayment", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          ...postDetails,
+          payment: "success",
+        }),
+      }).then((res) => {
+        if (res) {
+          alert("from payment system");
+          history.replace("/jobpost");
+        }
+      });
 
       setPaymentError(null);
 
@@ -98,8 +100,12 @@ const ProcessPayment = () => {
   // paymentSuccess?
 
   return (
-    <div >
-      <form className='m-auto' style={{width:'18rem'}} onSubmit={handleSubmit}>
+    <div>
+      <form
+        className="m-auto"
+        style={{ width: "18rem" }}
+        onSubmit={handleSubmit}
+      >
         <label>
           Card number
           <CardNumberElement onFocus={handleRemoveText} options={options} />
@@ -115,7 +121,9 @@ const ProcessPayment = () => {
           <CardCvcElement options={options} />
         </label>
         <br />
-        <h6 className="text-success">Your Service charged will be $</h6>
+        <h6 className="text-success">
+          Your Service charged will be {postDetails.price}
+        </h6>
         <button type="submit" disabled={!stripe}>
           Pay
         </button>

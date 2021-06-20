@@ -115,6 +115,8 @@ const Login = () => {
 
         // console.log(postDetails);
 
+        setPostDetails({...postDetails,email: email});
+
         if (radioValue === "employer") {
           fetch("http://localhost:5000/employer", {
             method: "POST",

@@ -1,8 +1,9 @@
 import React from "react";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const NavigationBar = () => {
+  const history = useHistory();
   return (
     <div>
       <Navbar bg="light" expand="lg">
@@ -19,7 +20,9 @@ const NavigationBar = () => {
               <Nav.Link>
                 <Link to="/">Link</Link>
               </Nav.Link>
-              <Button variant="danger">Login</Button>
+              <Button onClick={() => history.push("/login")} variant="danger">
+                Login
+              </Button>
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -1,39 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Button, Card, Col } from "react-bootstrap";
 import { useHistory } from "react-router";
 import { postContext } from "../../App";
 
 const PackageDetails = ({ item }) => {
-
   const { name, description, moreDes, price } = item;
   const history = useHistory();
 
   // use context api
-  const [postDetails,setPostDetails] = useContext(postContext);
+  const [postDetails, setPostDetails] = useContext(postContext);
+  // const [data, setData] = useState({ name: "", price: "" });
 
-  // useEffect(() => {
-  //   fetch('http://localhost:5000/employer',{
-  //     method: 'POST',
-  //     headers:{'content-type':'application/json'},
-  //     body: JSON.stringify(postDetails)
+  const handleClick = (name, price) => {
+    // console.log(name, price);
 
 
-  //   })
+    setPostDetails({...postDetails,name,price});
 
-  // },[])
-
-  const handleChange = (selectItem) => {
-
-    const {name,price} = selectItem;
-    setPostDetails({...postDetails,
-      packageName: name,
-      price: price
-    })
-
-    // console.log(selectItem);
     history.replace('/payment');
+    
   };
 
+  useEffect(() => {
+    
+  },[postDetails])
+  
+  
 
   return (
     <div>
@@ -48,7 +40,7 @@ const PackageDetails = ({ item }) => {
             <br />
             <div className="d-flex justify-content-center">
               <Button
-                onClick={() => handleChange({ name: name, price: price })}
+                onClick={() => handleClick(name, price)}
                 variant="primary"
               >
                 Buy package
