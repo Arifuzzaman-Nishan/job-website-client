@@ -1,15 +1,39 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Card, Col } from "react-bootstrap";
 import { useHistory } from "react-router";
+import { postContext } from "../../App";
 
 const PackageDetails = ({ item }) => {
+
   const { name, description, moreDes, price } = item;
   const history = useHistory();
 
+  // use context api
+  const [postDetails,setPostDetails] = useContext(postContext);
+
+  // useEffect(() => {
+  //   fetch('http://localhost:5000/employer',{
+  //     method: 'POST',
+  //     headers:{'content-type':'application/json'},
+  //     body: JSON.stringify(postDetails)
+
+
+  //   })
+
+  // },[])
+
   const handleChange = (selectItem) => {
-    console.log(selectItem);
+
+    const {name,price} = selectItem;
+    setPostDetails({...postDetails,
+      packageName: name,
+      price: price
+    })
+
+    // console.log(selectItem);
     history.replace('/payment');
   };
+
 
   return (
     <div>

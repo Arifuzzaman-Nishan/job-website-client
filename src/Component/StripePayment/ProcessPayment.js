@@ -5,7 +5,8 @@ import {
   useElements,
   useStripe
 } from "@stripe/react-stripe-js";
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
+import { postContext } from "../../App";
 import './ProcessPayment.css';
 
 const useOptions = () => {
@@ -33,12 +34,14 @@ const useOptions = () => {
 };
 
 const ProcessPayment = () => {
+
   const stripe = useStripe();
   const elements = useElements();
   const options = useOptions();
 
   const [paymentError, setPaymentError] = useState(null);
   const [paymentSuccess, setPaymentSuccess] = useState(null);
+  const [postDetails,setPostDetails] = useContext(postContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -60,6 +63,10 @@ const ProcessPayment = () => {
     } else {
       // console.log('[PaymentMethod]', paymentMethod);
       setPaymentSuccess(paymentMethod.id);
+
+      setPostDetails({...postDetails,
+        paymentStatus: 'successfully'
+      })
 
       // const newOrder = {
       //     name: sessionStorage.getItem('name'),

@@ -1,10 +1,11 @@
 import { Radio } from "antd";
 import firebase from "firebase/app";
 import "firebase/auth";
-import { React, useRef, useState } from "react";
+import { React, useContext, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router";
+import { postContext } from "../../App";
 import firebaseConfig from "./firebaseConfiq";
 
 if (!firebase.apps.length) {
@@ -25,6 +26,9 @@ const Login = () => {
     error: "",
     value: true,
   });
+
+  // use constext api
+  const [postDetails, setPostDetails] = useContext(postContext);
 
   const history = useHistory();
   const location = useLocation();
@@ -52,7 +56,7 @@ const Login = () => {
 
   const onSubmit = (data) => {
     const { email, password } = data;
-    console.log(data);
+    // console.log(data);
 
     // create an account
     if (newUser && email && password) {
@@ -63,7 +67,7 @@ const Login = () => {
           // Signed in
           // var user = userCredential.user;
           console.log("nishan");
-          storeAuthToken();
+          storeAuthToken(data);
           // ...
         })
         .catch((error) => {
@@ -80,7 +84,7 @@ const Login = () => {
           // Signed in
           // var user = userCredential.user;
           console.log("sign in successfully");
-          storeAuthToken();
+          storeAuthToken(data);
           // ...
         })
         .catch((error) => {
@@ -90,7 +94,8 @@ const Login = () => {
     }
   };
 
-  const storeAuthToken = () => {
+  const storeAuthToken = (data) => {
+    const { name, email } = data;
     firebase
       .auth()
       .currentUser.getIdToken(/* forceRefresh */ true)
@@ -98,7 +103,33 @@ const Login = () => {
         console.log(idToken);
         sessionStorage.setItem("token", idToken);
 
-        alert('successfully log in');
+        // const newPost = {
+        //   ...postDetails
+        // }
+        // newPost.name = name;
+        // newPost.email = email;
+
+        // setPostDetails(newPost);
+
+        alert("successfully log in");
+
+        // console.log(postDetails);
+
+        if (radioValue === "employer") {
+          fetch("http://localhost:5000/employer", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              name: name,
+              email: email,
+            }),
+          }).then((res) => {
+            if (res) {
+              alert("successfully data send");
+              // console.log(postDetails);
+            }
+          });
+        }
 
         radioValue === "employer"
           ? history.replace("/package")

@@ -3,14 +3,13 @@ import { Container, Row } from "react-bootstrap";
 import PackageDetails from "./PackageDetails";
 
 const Package = () => {
-  const card = [1, 2, 3];
   const cardFakeData = [
     {
       name: "Premium",
       description: "You will be able to post 10 hours per month",
       moreDes:
         "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quas dolorum molestias inventore veritatis. Eveniet quae distinctio sit alias neque aliquid ipsum, eos asperiores officia quasi omnis perferendis, ullam delectus eius.",
-      price: "$50",
+      price: "$90",
     },
     {
       name: "Standard",
@@ -24,9 +23,10 @@ const Package = () => {
       description: "You will be able to post 30 hours per month",
       moreDes:
         "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quas dolorum molestias inventore veritatis. Eveniet quae distinctio sit alias neque aliquid ipsum, eos asperiores officia quasi omnis perferendis, ullam delectus eius.",
-      price: "$90",
+      price: "$50",
     },
   ];
+  
   return (
     <Container>
       <Row className='mt-5'>

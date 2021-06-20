@@ -10,11 +10,10 @@ const JobPost = () => {
   } = useForm();
   const onSubmit = (data) => console.log(data);
 
-
   return (
     <Container>
-      <Card className='m-auto p-3' style={{width:'23rem'}}>
-        <form className='' onSubmit={handleSubmit(onSubmit)}>
+      <Card className="mx-auto mt-5 p-3" style={{ width: "23rem" }}>
+        <form className="" onSubmit={handleSubmit(onSubmit)}>
           <input
             className="form-control"
             placeholder="Enter job title"
@@ -29,6 +28,20 @@ const JobPost = () => {
           />
           {errors.location && <span>location field is required</span>}
 
+          <input
+            className="form-control"
+            placeholder="Enter job type"
+            {...register("jobtype", { required: true })}
+          />
+          {errors.jobtype && <span>jobtype field is required</span>}
+
+          <input
+            className="form-control"
+            placeholder="Enter job category"
+            {...register("category", { required: true })}
+          />
+          {errors.category && <span>jobtype field is required</span>}
+
           <textarea
             spellCheck="false"
             rows="5"
@@ -38,15 +51,10 @@ const JobPost = () => {
           />
           {errors.description && <span>description field is required</span>}
 
-          <input
-            className="form-control"
-            placeholder="Enter job type"
-            {...register("jobtype", { required: true })}
-          />
-          {errors.jobtype && <span>jobtype field is required</span>}
-          
-            <br />
-          <input className='btn btn-danger' value='post job' type="submit" />
+          <br />
+          <div className="d-flex justify-content-center">
+            <input className="btn btn-danger" value="post job" type="submit" />
+          </div>
         </form>
       </Card>
     </Container>
