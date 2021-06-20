@@ -103,17 +103,8 @@ const Login = () => {
         console.log(idToken);
         sessionStorage.setItem("token", idToken);
 
-        // const newPost = {
-        //   ...postDetails
-        // }
-        // newPost.name = name;
-        // newPost.email = email;
-
-        // setPostDetails(newPost);
-
         alert("successfully log in");
 
-        // console.log(postDetails);
 
         setPostDetails({...postDetails,email: email});
 

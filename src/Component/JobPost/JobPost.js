@@ -1,14 +1,39 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card, Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { postContext } from "../../App";
 
 const JobPost = () => {
+  const [postDetails, setPostDetails] = useContext(postContext);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    const { title, location, jobtype, category, description } = data;
+
+    fetch("http://localhost:5000/jobPost", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        title: title,
+        location: location,
+        jobtype: jobtype,
+        category: category,
+        description: description,
+        email: postDetails.email,
+        status: "pending",
+      }),
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data){
+        alert('job post');
+      }
+    })
+  };
 
   return (
     <Container>

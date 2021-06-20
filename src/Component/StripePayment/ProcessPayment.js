@@ -66,9 +66,6 @@ const ProcessPayment = () => {
     } else {
       setPaymentSuccess(paymentMethod.id);
 
-      // setPostDetails({ ...postDetails, paymentStatus: "successfully" });
-
-      // setPostDetails({...postDetails,payment:'success'});
 
       fetch("http://localhost:5000/employerPayment", {
         method: "POST",
