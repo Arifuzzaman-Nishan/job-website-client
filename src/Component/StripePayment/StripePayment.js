@@ -1,6 +1,7 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import React from "react";
+import { Container } from "react-bootstrap";
 import ProcessPayment from "./ProcessPayment";
 
 const stripePromise = loadStripe(
@@ -8,12 +9,19 @@ const stripePromise = loadStripe(
 );
 
 const StripePayment = () => {
+
+
+
   return (
-    <div className=''>
-      <Elements stripe={stripePromise}>
-        <ProcessPayment></ProcessPayment>
-      </Elements>
-    </div>
+    <Container className="mt-4">
+
+      {/* stripe payment gateway system */}
+      <div>
+        <Elements stripe={stripePromise}>
+          <ProcessPayment></ProcessPayment>
+        </Elements>
+      </div>
+    </Container>
   );
 };
 
