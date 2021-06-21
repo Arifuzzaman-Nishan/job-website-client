@@ -1,8 +1,13 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
+import { useHistory } from 'react-router-dom';
 
 const JobApply = () => {
+
+    const history = useHistory();
+
+    console.log(history.location.pathname);
 
     const {
         register,
@@ -12,7 +17,7 @@ const JobApply = () => {
       } = useForm();
 
     const onSubmit  = (data) => {
-        fetch('http://localhost:5000/applyjob',{
+        fetch('https://frozen-chamber-29591.herokuapp.com/applyjob',{
             method: 'POST',
             headers: {'content-type':'application/json'},
             body: JSON.stringify(data)

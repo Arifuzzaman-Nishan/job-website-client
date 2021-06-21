@@ -4,7 +4,7 @@ const AllPostList = ({ item }) => {
   const { _id, title, category, location, jobtype, status } = item;
 
   const handleChange = (e) => {
-    fetch(`http://localhost:5000/update/${_id}`, {
+    fetch(`https://frozen-chamber-29591.herokuapp.com/update/${_id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
@@ -13,7 +13,6 @@ const AllPostList = ({ item }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        // alert('successfully updated');
         window.location.reload();
       });
   };

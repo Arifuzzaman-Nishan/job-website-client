@@ -6,7 +6,7 @@ const Admin = () => {
   const [allPost, setAllPost] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/allPost")
+    fetch("https://frozen-chamber-29591.herokuapp.com/allPost")
       .then((res) => res.json())
       .then((data) => setAllPost(data));
   }, []);

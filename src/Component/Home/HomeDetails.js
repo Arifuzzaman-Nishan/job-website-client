@@ -7,6 +7,8 @@ const HomeDetails = ({ item }) => {
   const { title, location, description,jobtype } = item;
   const history = useHistory();
 
+  console.log(history);
+
   return (
     <div>
       <Card className='mb-4 mx-auto' style={{ width: "18rem",cursor:'pointer' }}>

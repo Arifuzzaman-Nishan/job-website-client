@@ -67,7 +67,7 @@ const ProcessPayment = () => {
       setPaymentSuccess(paymentMethod.id);
 
 
-      fetch("http://localhost:5000/employerPayment", {
+      fetch("https://frozen-chamber-29591.herokuapp.com/employerPayment", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
@@ -76,7 +76,6 @@ const ProcessPayment = () => {
         }),
       }).then((res) => {
         if (res) {
-          alert("from payment system");
           history.replace("/jobpost");
         }
       });

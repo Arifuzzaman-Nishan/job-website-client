@@ -14,7 +14,7 @@ const JobPost = () => {
   const onSubmit = (data) => {
     const { title, location, jobtype, category, description } = data;
 
-    fetch("http://localhost:5000/jobPost", {
+    fetch("https://frozen-chamber-29591.herokuapp.com/jobPost", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -30,7 +30,7 @@ const JobPost = () => {
     .then(res => res.json())
     .then(data => {
       if(data){
-        alert('job post');
+        alert('job post successfully');
       }
     })
   };

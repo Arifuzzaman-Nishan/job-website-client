@@ -18,7 +18,7 @@ const Home = () => {
   const [isFilter, setIsFilter] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/sucessPost")
+    fetch("https://frozen-chamber-29591.herokuapp.com/sucessPost")
       .then((res) => res.json())
       .then((data) => setSuccessPost(data));
   }, []);

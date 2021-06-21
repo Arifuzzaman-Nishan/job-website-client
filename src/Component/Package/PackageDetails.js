@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Button, Card, Col } from "react-bootstrap";
 import { useHistory } from "react-router";
 import { postContext } from "../../App";
@@ -21,11 +21,7 @@ const PackageDetails = ({ item }) => {
     
   };
 
-  useEffect(() => {
-    
-  },[postDetails])
-  
-  
+
 
   return (
     <div>

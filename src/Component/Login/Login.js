@@ -4,7 +4,7 @@ import "firebase/auth";
 import { React, useContext, useEffect, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useHistory, useLocation } from "react-router";
+import { useHistory } from "react-router";
 import { postContext } from "../../App";
 import firebaseConfig from "./firebaseConfiq";
 
@@ -31,8 +31,8 @@ const Login = () => {
   const [postDetails, setPostDetails] = useContext(postContext);
 
   const history = useHistory();
-  const location = useLocation();
-  const { from } = location.state || { from: { pathname: "/" } };
+  // const location = useLocation();
+  // const { from } = location.state || { from: { pathname: "/" } };
 
   // if the user is a new user
   const [newUser, setNewUser] = useState(false);
@@ -52,7 +52,7 @@ const Login = () => {
   password.current = watch("password", "");
 
   useEffect(() => {
-    fetch("http://localhost:5000/isAdmin", {
+    fetch("https://frozen-chamber-29591.herokuapp.com/isAdmin", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -69,7 +69,7 @@ const Login = () => {
         }
       });
 
-    fetch("http://localhost:5000/isEmployer", {
+    fetch("https://frozen-chamber-29591.herokuapp.com/isEmployer", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -85,7 +85,7 @@ const Login = () => {
         }
       });
 
-    fetch("http://localhost:5000/isJobseeker", {
+    fetch("https://frozen-chamber-29591.herokuapp.com/isJobseeker", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -95,8 +95,6 @@ const Login = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data) {
-          console.log("jobseeker " + data);
-          console.log(history);
           history.replace("/home");
         }
       });
@@ -117,7 +115,7 @@ const Login = () => {
           setPostDetails({ ...postDetails, email: email });
 
           if (radioValue === "employer") {
-            fetch("http://localhost:5000/employer", {
+            fetch("https://frozen-chamber-29591.herokuapp.com/employer", {
               method: "POST",
               headers: { "content-type": "application/json" },
               body: JSON.stringify({
@@ -126,13 +124,12 @@ const Login = () => {
               }),
             }).then((res) => {
               if (res) {
-                alert("successfully data send");
-                // console.log(postDetails);
+                // alert("successfully data send");
               }
             });
           } else if (radioValue === "jobSeeker") {
             console.log("job seeker");
-            fetch("http://localhost:5000/jobseeker", {
+            fetch("https://frozen-chamber-29591.herokuapp.com/jobseeker", {
               method: "POST",
               headers: { "content-type": "application/json" },
               body: JSON.stringify({
@@ -141,8 +138,7 @@ const Login = () => {
               }),
             }).then((res) => {
               if (res) {
-                alert("successfully data send");
-                // console.log(postDetails);
+                // alert("successfully data send");
               }
             });
           }
@@ -163,6 +159,10 @@ const Login = () => {
           console.log("sign in successfully");
 
           setPostDetails({ ...postDetails, email: email });
+
+          if (history.location.pathname == "/jobapply") {
+            history.replace("/jobapply");
+          }
         })
         .catch((error) => {
           const errorMessage = error.message;
