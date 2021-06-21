@@ -3,9 +3,11 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./Component/Home/Home";
 import JobPost from "./Component/JobPost/JobPost";
 import Login from "./Component/Login/Login";
+import PrivateRoute from "./Component/Login/PrivateRoute/PrivateRoute";
 import NavigationBar from "./Component/NavigationBar/NavigationBar";
 import Package from "./Component/Package/Package";
 import StripePayment from "./Component/StripePayment/StripePayment";
+
 
 export const postContext = createContext();
 
@@ -25,15 +27,15 @@ const App = () => {
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/package">
+          <PrivateRoute path="/package">
             <Package />
-          </Route>
-          <Route path="/payment">
+          </PrivateRoute>
+          <PrivateRoute path="/payment">
             <StripePayment />
-          </Route>
-          <Route path="/jobpost">
+          </PrivateRoute>
+          <PrivateRoute path="/jobpost">
             <JobPost />
-          </Route>
+          </PrivateRoute>
         </Switch>
       </Router>
     </postContext.Provider>

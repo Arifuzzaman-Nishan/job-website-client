@@ -45,7 +45,6 @@ const Login = () => {
   const [radioValue, setRadioValue] = useState("employer");
 
   const handlOnChange = (e) => {
-    // console.log("radio checked", e.target.value);
     setRadioValue(e.target.value);
   };
 
@@ -53,10 +52,8 @@ const Login = () => {
   password.current = watch("password", "");
 
   // signUp and signIn
-
   const onSubmit = (data) => {
     const { email, password } = data;
-    // console.log(data);
 
     // create an account
     if (newUser && email && password) {
@@ -64,31 +61,21 @@ const Login = () => {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          // Signed in
-          // var user = userCredential.user;
           console.log("nishan");
           storeAuthToken(data);
-          // ...
         })
         .catch((error) => {
-          // var errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorMessage);
-          // ..
         });
     } else {
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          // Signed in
-          // var user = userCredential.user;
           console.log("sign in successfully");
-          storeAuthToken(data);
-          // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
         });
     }
@@ -105,8 +92,7 @@ const Login = () => {
 
         alert("successfully log in");
 
-
-        setPostDetails({...postDetails,email: email});
+        setPostDetails({ ...postDetails, email: email });
 
         if (radioValue === "employer") {
           fetch("http://localhost:5000/employer", {

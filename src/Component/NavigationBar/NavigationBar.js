@@ -1,9 +1,32 @@
-import React from "react";
+import jwt_decode from "jwt-decode";
+import React, { useContext } from "react";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
+import { postContext } from "../../App";
 
 const NavigationBar = () => {
   const history = useHistory();
+  const token = sessionStorage.getItem("token");
+  const [postDetails, setPostDetails] = useContext(postContext);
+
+  const handleSignOut = () => {
+    setPostDetails({});
+    sessionStorage.removeItem("token");
+  };
+
+  const isLoggedIn = () => {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      return false;
+    }
+    const decodedToken = jwt_decode(token);
+    // get current time
+    const currentTime = new Date().getTime() / 1000;
+    // compare the expiration time with the current time
+    // will return false if expired and will return true if not expired
+    return decodedToken.exp > currentTime;
+  };
+
   return (
     <div>
       <Navbar bg="light" expand="lg">
@@ -20,10 +43,27 @@ const NavigationBar = () => {
               <Nav.Link>
                 <Link to="/">Link</Link>
               </Nav.Link>
-              <Button onClick={() => history.push("/login")} variant="danger">
-                Login
-              </Button>
             </Nav>
+            {postDetails.email || isLoggedIn() ? (
+              <div className="p-2">
+                <Button
+                  className="mr-4"
+                  onClick={handleSignOut}
+                  variant="outline-success"
+                >
+                  SignOut
+                </Button>
+              </div>
+            ) : (
+              <div className="mr-4">
+                <Button
+                  onClick={() => history.push("/login")}
+                  variant="outline-success"
+                >
+                  LogIn
+                </Button>
+              </div>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>
