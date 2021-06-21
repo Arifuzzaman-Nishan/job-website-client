@@ -1,30 +1,25 @@
-import jwt_decode from "jwt-decode";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { postContext } from "../../App";
 
 const NavigationBar = () => {
   const history = useHistory();
-  const token = sessionStorage.getItem("token");
   const [postDetails, setPostDetails] = useContext(postContext);
+
+  const [admin, setAdmin] = useState(false);
+  const [employer, setEmployer] = useState(false);
+
+  // const employer = sessionStorage.getItem('employer');
+  // const admin = sessionStorage.getItem('admin');
+
+  console.log(sessionStorage.getItem("admin"));
+  console.log(postDetails);
 
   const handleSignOut = () => {
     setPostDetails({});
-    sessionStorage.removeItem("token");
-  };
-
-  const isLoggedIn = () => {
-    const token = sessionStorage.getItem("token");
-    if (!token) {
-      return false;
-    }
-    const decodedToken = jwt_decode(token);
-    // get current time
-    const currentTime = new Date().getTime() / 1000;
-    // compare the expiration time with the current time
-    // will return false if expired and will return true if not expired
-    return decodedToken.exp > currentTime;
+    sessionStorage.removeItem("employer");
+    sessionStorage.removeItem("admin");
   };
 
   return (
@@ -40,11 +35,18 @@ const NavigationBar = () => {
               <Nav.Link>
                 <Link to="/home">Home</Link>
               </Nav.Link>
-              <Nav.Link>
-                <Link to="/">Link</Link>
-              </Nav.Link>
+              {postDetails.admin && (
+                <Nav.Link>
+                  <Link to="/admin">Admin Dashaboard</Link>
+                </Nav.Link>
+              )}
+              {postDetails.employer && (
+                <Nav.Link>
+                  <Link to="/jobpost">Employer Jobpost</Link>
+                </Nav.Link>
+              )}
             </Nav>
-            {postDetails.email || isLoggedIn() ? (
+            {postDetails.email ? (
               <div className="p-2">
                 <Button
                   className="mr-4"

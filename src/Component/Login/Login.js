@@ -1,7 +1,7 @@
 import { Radio } from "antd";
 import firebase from "firebase/app";
 import "firebase/auth";
-import { React, useContext, useRef, useState } from "react";
+import { React, useContext, useEffect, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router";
@@ -32,7 +32,7 @@ const Login = () => {
 
   const history = useHistory();
   const location = useLocation();
-  const { from } = location.state || { from: { pathname: "/" } };
+  // const { from } = location.state || { from: { pathname: "/" } };
 
   // if the user is a new user
   const [newUser, setNewUser] = useState(false);
@@ -51,9 +51,63 @@ const Login = () => {
   const password = useRef({});
   password.current = watch("password", "");
 
+  useEffect(() => {
+    fetch("http://localhost:5000/isAdmin", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ email: postDetails.email }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          console.log("admin " + data);
+          sessionStorage.setItem("admin", true);
+          setPostDetails({ ...postDetails, admin: postDetails.email });
+          history.replace("/admin");
+        }
+      });
+
+    fetch("http://localhost:5000/isEmployer", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ email: postDetails.email }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          console.log("employer " + data);
+          sessionStorage.setItem("employer", true);
+          setPostDetails({ ...postDetails, employer: postDetails.email });
+          // history.replace("/jobpost");
+          history.replace("/jobpost");
+        }
+      });
+
+    fetch("http://localhost:5000/isJobseeker", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ email: postDetails.email }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          console.log("jobseeker " + data);
+          sessionStorage.setItem("employer", true);
+          // history.replace("/jobpost");
+          history.replace("/home");
+        }
+      });
+  }, [postDetails]);
+
   // signUp and signIn
   const onSubmit = (data) => {
-    const { email, password } = data;
+    const { email, password, name } = data;
 
     // create an account
     if (newUser && email && password) {
@@ -62,7 +116,43 @@ const Login = () => {
         .createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
           console.log("nishan");
-          storeAuthToken(data);
+
+          setPostDetails({ ...postDetails, email: email });
+
+          if (radioValue === "employer") {
+            fetch("http://localhost:5000/employer", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({
+                name: name,
+                email: email,
+              }),
+            }).then((res) => {
+              if (res) {
+                alert("successfully data send");
+                // console.log(postDetails);
+              }
+            });
+          } else if (radioValue === "jobSeeker") {
+            console.log("job seeker");
+            fetch("http://localhost:5000/jobseeker", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({
+                name: name,
+                email: email,
+              }),
+            }).then((res) => {
+              if (res) {
+                alert("successfully data send");
+                // console.log(postDetails);
+              }
+            });
+          }
+
+          radioValue === "employer"
+            ? history.replace("/package")
+            : history.replace("/");
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -75,112 +165,13 @@ const Login = () => {
         .then((userCredential) => {
           console.log("sign in successfully");
 
-          // for admin login checking
-          fetch("http://localhost:5000/isAdmin", {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify({ email: email }),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data) {
-                console.log("admin" + data);
-                sessionStorage.setItem("admin", true);
-              }
-            });
-
-          // for employer login checking
-          fetch("http://localhost:5000/isEmployer", {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify({ email: email }),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data) {
-                console.log("employer" + data);
-                sessionStorage.setItem("employer", true);
-              }
-            });
-
-          if (sessionStorage.getItem("admin")) {
-            history.replace("/admin");
-          } else if (sessionStorage.getItem("employer")) {
-            history.replace("/jobpost");
-          } else {
-            history.replace("/home");
-          }
-
-          
+          setPostDetails({ ...postDetails, email: email });
         })
         .catch((error) => {
           const errorMessage = error.message;
         });
     }
   };
-
-  const storeAuthToken = (data) => {
-    const { name, email } = data;
-    firebase
-      .auth()
-      .currentUser.getIdToken(/* forceRefresh */ true)
-      .then((idToken) => {
-        console.log(idToken);
-        sessionStorage.setItem("token", idToken);
-
-        alert("successfully log in");
-
-        setPostDetails({ ...postDetails, email: email });
-
-        if (radioValue === "employer") {
-          fetch("http://localhost:5000/employer", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({
-              name: name,
-              email: email,
-            }),
-          }).then((res) => {
-            if (res) {
-              alert("successfully data send");
-              // console.log(postDetails);
-            }
-          });
-        }
-
-        radioValue === "employer"
-          ? history.replace("/package")
-          : history.replace(from);
-      })
-      .catch((err) => {
-        // Handle error
-        console.log(err.message);
-      });
-  };
-
-  // const createAccountChecking = () => {
-
-  //     // for employer login checking
-  //     fetch("http://localhost:5000/isEmployer", {
-  //       method: "POST",
-  //       headers: {
-  //         "content-type": "application/json",
-  //       },
-  //       body: JSON.stringify({ email: email }),
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         if (data) {
-  //           console.log("employer" + data);
-  //           sessionStorage.setItem("employer", true);
-  //         }
-  //       });
-
-  // }
 
   return (
     <div>
@@ -266,7 +257,7 @@ const Login = () => {
                   <p>What are you looking for:</p>
                   <Radio.Group onChange={handlOnChange} defaultValue="employer">
                     <Radio value="employer">Employer</Radio>
-                    <Radio value="JobSeeker">Job seeker</Radio>
+                    <Radio value="jobSeeker">Job seeker</Radio>
                   </Radio.Group>
                 </div>
               )}
