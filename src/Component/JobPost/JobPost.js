@@ -48,7 +48,7 @@ const JobPost = () => {
 
           <input
             className="form-control"
-            placeholder="Enter company location"
+            placeholder="Enter company Name and location"
             {...register("location", { required: true })}
           />
           {errors.location && <span>location field is required</span>}

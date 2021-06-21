@@ -1,33 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Filter from "../Filter/Filter";
 import HomeDetails from "./HomeDetails";
 
 const Home = () => {
-  const fakeData = [
-    {
-      title: "Junior web Developer",
-      companyName: "Decisive Data systems",
-      location: "Burtonsvile, MD 20866",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, deserunt?",
-    },
-    {
-      title: "Junior web Developer",
-      companyName: "Decisive Data systems",
-      location: "Burtonsvile, MD 20866",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, deserunt?",
-    },
-  ];
+
+  const [successPost,setSuccessPost] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/sucessPost')
+    .then(res => res.json())
+    .then(data => setSuccessPost(data))
+  },[])
+
+  console.log(successPost);
+
   return (
     <Container>
       <Row>
         <Col md={4}>
           <Filter></Filter>
         </Col>
-        <Col className="border border-danger" md={8}>
-          {fakeData.map((item, key) => (
+        <Col className="" md={8}>
+          {successPost.map((item,key) => (
             <HomeDetails key={key} item={item} />
           ))}
         </Col>
