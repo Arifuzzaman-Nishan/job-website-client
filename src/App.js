@@ -2,6 +2,7 @@ import React, { createContext, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Admin from "./Component/Admin/Admin";
 import Home from "./Component/Home/Home";
+import JobApply from "./Component/JobApply/JobApply";
 import JobPost from "./Component/JobPost/JobPost";
 import Login from "./Component/Login/Login";
 import PrivateRoute from "./Component/Login/PrivateRoute/PrivateRoute";
@@ -35,6 +36,9 @@ const App = () => {
           </PrivateRoute>
           <PrivateRoute path="/admin">
             <Admin />
+          </PrivateRoute>
+          <PrivateRoute path="/jobapply">
+            <JobApply></JobApply>
           </PrivateRoute>
           <Route exact path="/">
             <Home />

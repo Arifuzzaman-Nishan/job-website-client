@@ -1,9 +1,11 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 const HomeDetails = ({ item }) => {
   // console.log(item);
   const { title, location, description,jobtype } = item;
+  const history = useHistory();
 
   return (
     <div>
@@ -13,7 +15,7 @@ const HomeDetails = ({ item }) => {
           <h6>{location}</h6>
           <h6>{jobtype}</h6>
           <Card.Text>{description}</Card.Text>
-          <Button variant='success'>Apply Now</Button>
+          <Button onClick={() => history.push('/jobapply')} variant='success'>Apply Now</Button>
         </Card.Body>
       </Card>
     </div>

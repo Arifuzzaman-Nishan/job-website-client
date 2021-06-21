@@ -32,7 +32,7 @@ const Login = () => {
 
   const history = useHistory();
   const location = useLocation();
-  // const { from } = location.state || { from: { pathname: "/" } };
+  const { from } = location.state || { from: { pathname: "/" } };
 
   // if the user is a new user
   const [newUser, setNewUser] = useState(false);
@@ -80,9 +80,7 @@ const Login = () => {
       .then((data) => {
         if (data) {
           console.log("employer " + data);
-          // sessionStorage.setItem("employer", true);
           setPostDetails({ ...postDetails, employer: postDetails.email });
-          // history.replace("/jobpost");
           history.replace("/jobpost");
         }
       });
@@ -98,8 +96,7 @@ const Login = () => {
       .then((data) => {
         if (data) {
           console.log("jobseeker " + data);
-          // sessionStorage.setItem("employer", true);
-          // history.replace("/jobpost");
+          console.log(history);
           history.replace("/home");
         }
       });
