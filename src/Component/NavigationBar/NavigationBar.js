@@ -13,6 +13,8 @@ const NavigationBar = () => {
   // const employer = sessionStorage.getItem('employer');
   // const admin = sessionStorage.getItem('admin');
 
+
+
   console.log(sessionStorage.getItem("admin"));
   console.log(postDetails);
 
@@ -21,6 +23,10 @@ const NavigationBar = () => {
     sessionStorage.removeItem("employer");
     sessionStorage.removeItem("admin");
   };
+
+  if(postDetails.admin){
+    sessionStorage.setItem('admin',true);
+  }
 
   return (
     <div>
@@ -35,7 +41,7 @@ const NavigationBar = () => {
               <Nav.Link>
                 <Link to="/home">Home</Link>
               </Nav.Link>
-              {postDetails.admin && (
+              {sessionStorage.getItem('admin') === 'true' && (
                 <Nav.Link>
                   <Link to="/admin">Admin Dashaboard</Link>
                 </Nav.Link>
@@ -46,7 +52,7 @@ const NavigationBar = () => {
                 </Nav.Link>
               )}
             </Nav>
-            {postDetails.email ? (
+            {postDetails.email || sessionStorage.getItem('admin') === 'true' ? (
               <div className="p-2">
                 <Button
                   className="mr-4"

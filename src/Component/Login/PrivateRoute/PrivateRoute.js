@@ -9,7 +9,7 @@ const PrivateRoute = ({ children, ...rest }) => {
     <Route
       {...rest}
       render={({ location }) =>
-        postDetails.email? (
+        postDetails.email || sessionStorage.getItem('admin') === 'true'? (
           children
         ) : (
           <Redirect

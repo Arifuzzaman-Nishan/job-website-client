@@ -80,7 +80,7 @@ const Login = () => {
       .then((data) => {
         if (data) {
           console.log("employer " + data);
-          sessionStorage.setItem("employer", true);
+          // sessionStorage.setItem("employer", true);
           setPostDetails({ ...postDetails, employer: postDetails.email });
           // history.replace("/jobpost");
           history.replace("/jobpost");
@@ -98,7 +98,7 @@ const Login = () => {
       .then((data) => {
         if (data) {
           console.log("jobseeker " + data);
-          sessionStorage.setItem("employer", true);
+          // sessionStorage.setItem("employer", true);
           // history.replace("/jobpost");
           history.replace("/home");
         }
