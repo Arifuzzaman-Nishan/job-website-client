@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Card, Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { postContext } from "../../App";
+import ShowJobPostList from '../ShowJobPostList/ShowJobPostList'
 
 const JobPost = () => {
   const [postDetails, setPostDetails] = useContext(postContext);
@@ -37,6 +38,7 @@ const JobPost = () => {
 
   return (
     <Container>
+      <h2 className='text-center'>Post your Job</h2>
       <Card className="mx-auto mt-5 p-3" style={{ width: "23rem" }}>
         <form className="" onSubmit={handleSubmit(onSubmit)}>
           <input
@@ -82,6 +84,7 @@ const JobPost = () => {
           </div>
         </form>
       </Card>
+      <ShowJobPostList></ShowJobPostList>
     </Container>
   );
 };
