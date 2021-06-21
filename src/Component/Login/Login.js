@@ -74,6 +74,48 @@ const Login = () => {
         .signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           console.log("sign in successfully");
+
+          // for admin login checking
+          fetch("http://localhost:5000/isAdmin", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({ email: email }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data) {
+                console.log("admin" + data);
+                sessionStorage.setItem("admin", true);
+              }
+            });
+
+          // for employer login checking
+          fetch("http://localhost:5000/isEmployer", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({ email: email }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data) {
+                console.log("employer" + data);
+                sessionStorage.setItem("employer", true);
+              }
+            });
+
+          if (sessionStorage.getItem("admin")) {
+            history.replace("/admin");
+          } else if (sessionStorage.getItem("employer")) {
+            history.replace("/jobpost");
+          } else {
+            history.replace("/home");
+          }
+
+          
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -119,6 +161,26 @@ const Login = () => {
         console.log(err.message);
       });
   };
+
+  // const createAccountChecking = () => {
+
+  //     // for employer login checking
+  //     fetch("http://localhost:5000/isEmployer", {
+  //       method: "POST",
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //       body: JSON.stringify({ email: email }),
+  //     })
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         if (data) {
+  //           console.log("employer" + data);
+  //           sessionStorage.setItem("employer", true);
+  //         }
+  //       });
+
+  // }
 
   return (
     <div>
